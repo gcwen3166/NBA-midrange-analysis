@@ -294,11 +294,16 @@
     }
 
     .section-kicker {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.15rem 0.7rem;
+      border-radius: 999px;
       text-transform: uppercase;
       letter-spacing: 0.18em;
       font-size: 0.7rem;
-      color: var(--muted);
-      margin-bottom: 0.25rem;
+      color: var(--accent);
+      background: rgba(249, 115, 22, 0.12);            /* soft orange glow */
+      border: 1px solid rgba(249, 115, 22, 0.5);
     }
 
     .section-title {
@@ -367,9 +372,9 @@
 
     .plot-caption {
       margin-top: 0.55rem;
-      font-size: 0.78rem;
+      font-size: 0.95rem;
       color: var(--muted);
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
     .plot-caption span {
