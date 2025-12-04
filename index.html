@@ -141,6 +141,17 @@
       opacity: 1;
     }
 
+    /* Active link when its section is in view */
+    .nav a.active {
+      color: var(--text);
+    }
+    
+    .nav a.active::after {
+      transform: scaleX(1);
+      opacity: 1;
+    }
+
+
     @media (max-width: 840px) {
       .header-inner {
         padding-inline: 1.1rem;
@@ -439,6 +450,7 @@
         <a href="#midrange-decline">Midrange Attempts</a>
         <a href="#stars">Stars vs Role Players</a>
         <a href="#past-present">Past vs Present</a>
+        <a href="#references">References</a>
       </nav>
     </div>
   </header>
@@ -698,6 +710,36 @@
         </figure>
       </div>
     </section>
+
+    <section id="references" class="section container">
+      <header class="section-header">
+        <div>
+          <div class="section-kicker">References</div>
+          <h2 class="section-title">Data sources</h2>
+        </div>
+      </header>
+    
+      <div class="section-text">
+        <p>This analysis uses publicly available NBA data:</p>
+        <ul>
+          <li>
+            <strong>Basketball Reference – league stats per game:</strong>
+            <a href="https://www.basketball-reference.com/leagues/NBA_stats_per_game.html"
+               target="_blank" rel="noopener noreferrer">
+              basketball-reference.com/leagues/NBA_stats_per_game.html
+            </a>
+          </li>
+          <li>
+            <strong>Basketball shot data (2004–2025):</strong>
+            <a href="https://github.com/DomSamangy/NBA_Shots_04_25/tree/main"
+               target="_blank" rel="noopener noreferrer">
+              github.com/DomSamangy/NBA_Shots_04_25
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
   </main>
 
   <footer class="site-footer">
@@ -705,5 +747,39 @@
       <p>Built By George Wen & Chatgpt • Data, visualization, and basketball strategy.</p>
     </div>
   </footer>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const sections = document.querySelectorAll("main section[id]");
+      const navLinks = document.querySelectorAll(".nav a[href^='#']");
+  
+      const sectionForId = {};
+      navLinks.forEach(link => {
+        const id = link.getAttribute("href").slice(1);
+        sectionForId[id] = link;
+      });
+  
+      const observer = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            const id = entry.target.id;
+            const link = sectionForId[id];
+            if (!link) return;
+  
+            if (entry.isIntersecting) {
+              navLinks.forEach(l => l.classList.remove("active"));
+              link.classList.add("active");
+            }
+          });
+        },
+        {
+          root: null,
+          threshold: 0.4
+        }
+      );
+  
+      sections.forEach(section => observer.observe(section));
+    });
+  </script>
+
 </body>
 </html>
