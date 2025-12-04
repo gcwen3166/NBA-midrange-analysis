@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Midrange Isn't Dead – DSCI 304</title>
+  <meta name="description" content="A data story on how three-pointers and midrange shots have evolved in the modern NBA." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-elevated: #0b1120;
+      --bg-soft: #020617;
+      --text: #f9fafb;
+      --muted: #9ca3af;
+      --accent: #f97316;
+      --accent-soft: rgba(249, 115, 22, 0.12);
+      --border-subtle: #1f2937;
+      --shadow-soft: 0 22px 45px rgba(15, 23, 42, 0.85);
+      --radius-lg: 1.25rem;
+      --radius-full: 999px;
+      --transition-fast: 180ms ease-out;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, #1e293b 0, transparent 55%),
+        radial-gradient(circle at bottom right, #0f172a 0, transparent 60%),
+        var(--bg);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Header / Nav */
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.96), rgba(2, 6, 23, 0.96));
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 1.5rem;
+      gap: 1.75rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .badge {
+      padding: 0.25rem 0.7rem;
+      border-radius: var(--radius-full);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid rgba(249, 115, 22, 0.45);
+    }
+
+    .brand-title {
+      font-family: "Space Grotesk", system-ui, sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    .nav {
+      display: flex;
+      gap: 1.2rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .nav a {
+      padding: 0.25rem 0.4rem;
+      border-radius: 999px;
+      position: relative;
+    }
+
+    .nav a::after {
+      content: "";
+      position: absolute;
+      left: 0.4rem;
+      right: 0.4rem;
+      bottom: 0;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(to right, #f97316, #22c55e);
+      transform-origin: center;
+      transform: scaleX(0);
+      opacity: 0;
+      transition: transform var(--transition-fast), opacity var(--transition-fast);
+    }
+
+    .nav a:hover {
+      color: var(--text);
+    }
+
+    .nav a:hover::after {
+      transform: scaleX(1);
+      opacity: 1;
+    }
+
+    @media (max-width: 840px) {
+      .header-inner {
+        padding-inline: 1.1rem;
+      }
+      .nav {
+        display: none;
+      }
+    }
+
+    /* Page layout */
+
+    .page {
+      padding: 3.5rem 0 4.5rem;
+    }
+
+    /* Hero */
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.1fr);
+      gap: 2.5rem;
+      align-items: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .hero-copy h1 {
+      font-family: "Space Grotesk", system-ui, sans-serif;
+      font-size: clamp(2.1rem, 3vw + 1.4rem, 2.95rem);
+      line-height: 1.1;
+      margin: 0 0 1rem;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-copy h1 span {
+      background: linear-gradient(135deg, #f97316, #22c55e);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-copy p {
+      margin: 0 0 0.9rem;
+      color: var(--muted);
+      max-width: 40rem;
+      font-size: 0.98rem;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.25rem;
+    }
+
+    .meta-pill {
+      padding: 0.35rem 0.85rem;
+      font-size: 0.78rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      color: var(--muted);
+      background: rgba(15, 23, 42, 0.7);
+    }
+
+    .hero-visual {
+      background: radial-gradient(circle at top left, rgba(249, 115, 22, 0.24), transparent 55%), #020617;
+      border-radius: 1.6rem;
+      padding: 1.4rem;
+      border: 1px solid rgba(30, 64, 175, 0.6);
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+
+    .hero-tagline {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+    }
+
+    .hero-highlight {
+      font-size: 1.02rem;
+      font-weight: 500;
+      margin-top: 0.25rem;
+    }
+
+    .hero-highlight span {
+      color: var(--accent);
+    }
+
+    .hero-stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    .hero-stat {
+      background: rgba(15, 23, 42, 0.85);
+      border-radius: 1rem;
+      border: 1px solid rgba(30, 64, 175, 0.65);
+      padding: 0.6rem 0.7rem;
+    }
+
+    .hero-stat-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      margin-bottom: 0.1rem;
+    }
+
+    .hero-stat-value {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .hero-stat-note {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 0.1rem;
+    }
+
+    @media (max-width: 840px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .hero-visual {
+        order: -1;
+      }
+    }
+
+    /* Sections */
+
+    .section {
+      margin-bottom: 3.5rem;
+      padding: 2.1rem 1.75rem;
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at top left, rgba(15, 118, 110, 0.18), transparent 55%), var(--bg-elevated);
+      border: 1px solid rgba(30, 64, 175, 0.6);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .section-kicker {
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .section-title {
+      font-family: "Space Grotesk", system-ui, sans-serif;
+      font-size: 1.4rem;
+      margin: 0;
+    }
+
+    .section-subtitle {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+      max-width: 26rem;
+    }
+
+    .section-body {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.05fr);
+      gap: 1.85rem;
+      align-items: flex-start;
+    }
+
+    .section-body.reverse {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.25fr);
+    }
+
+    .section-text p {
+      margin: 0 0 0.9rem;
+      font-size: 0.98rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 900px) {
+      .section {
+        padding-inline: 1.2rem;
+      }
+      .section-body,
+      .section-body.reverse {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    /* Plots */
+
+    figure.plot-card {
+      margin: 0;
+      padding: 0.95rem;
+      border-radius: 1.1rem;
+      background: radial-gradient(circle at top left, rgba(249, 115, 22, 0.09), transparent 55%), #020617;
+      border: 1px solid rgba(30, 64, 175, 0.9);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.95);
+    }
+
+    .plot-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 0.9rem;
+    }
+
+    .plot-caption {
+      margin-top: 0.55rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .plot-caption span {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .plot-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 1rem;
+    }
+
+    @media (max-width: 720px) {
+      .plot-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    /* Footer */
+
+    .site-footer {
+      margin-top: 1rem;
+      padding: 1.8rem 0 0.5rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .site-footer p {
+      margin: 0;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <span class="badge">DSCI 304</span>
+        <a href="#top" class="brand-title">The Midrange Isn't Dead</a>
+      </div>
+      <nav class="nav">
+        <a href="#overview">Overview</a>
+        <a href="#three-point-boom">Threes Over Time</a>
+        <a href="#efficiency">Shot Value</a>
+        <a href="#midrange-decline">Midrange Attempts</a>
+        <a href="#stars">Stars vs Role Players</a>
+        <a href="#past-present">Past vs Present</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top" class="page">
+    <section id="overview" class="hero container">
+      <div class="hero-copy">
+        <h1><span>The midrange isn’t dead</span> — it just changed jobs.</h1>
+        <p>
+          One of the most common critics you will hear about the current NBA is the overwhelming amount of threes.
+          People bemoan how the league is so boring now, with everyone just jacking up threes and left. Old heads will
+          complain about the forgotten art of the midrange, raving about the MJ pullup, and how the games are so boring
+          with only threes being shot.
+        </p>
+        <div class="hero-meta">
+          <span class="meta-pill">NBA shot selection • analytics</span>
+          <span class="meta-pill">Three-pointers vs midrange</span>
+          <span class="meta-pill">Stars vs role players</span>
+        </div>
+      </div>
+
+      <aside class="hero-visual">
+        <div>
+          <div class="hero-tagline">Data story</div>
+          <div class="hero-highlight">
+            How the three-point revolution reshaped <span>who</span> takes midrange shots — and why.
+          </div>
+        </div>
+
+        <div class="hero-stat-grid">
+          <div class="hero-stat">
+            <div class="hero-stat-label">Timeline</div>
+            <div class="hero-stat-value">1979–2025</div>
+            <div class="hero-stat-note">From the birth of the three to the modern NBA.</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-label">Shot types</div>
+            <div class="hero-stat-value">4</div>
+            <div class="hero-stat-note">Free throws, layups, midrange, and threes.</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-label">Focus</div>
+            <div class="hero-stat-value">Stars & roles</div>
+            <div class="hero-stat-note">How usage shifted from role players to stars.</div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Three-point boom -->
+    <section id="three-point-boom" class="section container">
+      <header class="section-header">
+        <div>
+          <div class="section-kicker">Section 1</div>
+          <h2 class="section-title">The rise of the three-pointer</h2>
+        </div>
+        <p class="section-subtitle">
+          From a novelty line in 1979 to the engine of modern offenses, threes have skyrocketed in volume.
+        </p>
+      </header>
+
+      <div class="section-body">
+        <div class="section-text">
+          <p>
+            And, there is some truth in these critics. Since the introduction of the three pointer to the NBA in 1979,
+            the average three point attempts per game during nba seasons has gradually increased. However, since 2011
+            and Steph Curry’s unanimous 2016 MVP season, the amount of threes taken per game has skyrocketed.
+          </p>
+        </div>
+
+        <figure class="plot-card">
+          <!-- Replace the src with your actual filename -->
+          <img
+            src="img/three_point_attempts_per_game.png"
+            alt="Line chart of average three-point attempts per game by NBA season."
+            class="plot-image"
+          />
+          <figcaption class="plot-caption">
+            <span>Figure 1.</span> Average three-point attempts per game by season. Threes slowly grew for decades, then
+            exploded in the 2010s.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Shot value & efficiency -->
+    <section id="efficiency" class="section container">
+      <header class="section-header">
+        <div>
+          <div class="section-kicker">Section 2</div>
+          <h2 class="section-title">Not all shots are created equal</h2>
+        </div>
+        <p class="section-subtitle">
+          Once you look at efficiency and expected points, the logic behind the three-point craze becomes clearer.
+        </p>
+      </header>
+
+      <div class="section-body reverse">
+        <div class="section-text">
+          <p>
+            And this makes sense. Above are the shooting percentages by major shot type in the NBA in the 2024 season.
+            On average, NBA players shot 78% at the free throw line, 66.3% on layups, 41.9% on midrange shots, and 36%
+            on threes.
+          </p>
+          <p>
+            Once you convert those accuracies to the expected points per possession on these different shots, you can
+            begin to understand why teams favor the three so much. Simply by stepping back a few steps, teams can
+            increase their expected points per passion by .24! While free throws and layups are still the most valuable,
+            threes are much more valuable than midranges for the average NBA player.
+          </p>
+        </div>
+
+        <div class="plot-grid">
+          <figure class="plot-card">
+            <!-- Replace src with your actual filename -->
+            <img
+              src="img/shot_type_percentages_2024.png"
+              alt="Bar chart of shooting percentages in 2024 by shot type: free throws, layups, midrange, and threes."
+              class="plot-image"
+            />
+            <figcaption class="plot-caption">
+              <span>Figure 2.</span> Shooting percentages by shot type in the 2024 season.
+            </figcaption>
+          </figure>
+
+          <figure class="plot-card">
+            <!-- Replace src with your actual filename -->
+            <img
+              src="img/expected_points_per_shot_2024.png"
+              alt="Bar chart of expected points per possession by shot type in 2024."
+              class="plot-image"
+            />
+            <figcaption class="plot-caption">
+              <span>Figure 3.</span> Expected points per possession for each shot type. Threes clearly outpace midrange
+              jumpers for the average player.
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Midrange attempts over time -->
+    <section id="midrange-decline" class="section container">
+      <header class="section-header">
+        <div>
+          <div class="section-kicker">Section 3</div>
+          <h2 class="section-title">Where did all the midrange shots go?</h2>
+        </div>
+        <p class="section-subtitle">
+          League-wide midrange volume has dropped to historic lows, but that doesn’t mean the shot has vanished.
+        </p>
+      </header>
+
+      <div class="section-body">
+        <div class="section-text">
+          <p>
+            Furthermore, when looking at the total midrange attempts taken year by year, the number of total midrange
+            attempts has drastically fallen, reaching a lowest point in 2025. So are these NBA pundits and commentators
+            correct? Has the midrange shot disappeared from the NBA? Is it a forgotten art and now the game is simply
+            boring beyond belief?
+          </p>
+        </div>
+
+        <figure class="plot-card">
+          <!-- Replace src with your actual filename -->
+          <img
+            src="img/total_midrange_attempts_by_season.png"
+            alt="Line chart of total midrange attempts by season."
+            class="plot-image"
+          />
+          <figcaption class="plot-caption">
+            <span>Figure 4.</span> Total midrange attempts by season. The volume plummets in the modern era, even as
+            offenses grow more efficient.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Stars vs role players -->
+    <section id="stars" class="section container">
+      <header class="section-header">
+        <div>
+          <div class="section-kicker">Section 4</div>
+          <h2 class="section-title">The midrange is now a star shot</h2>
+        </div>
+        <p class="section-subtitle">
+          Teams have shifted midrange usage away from role players and toward elite creators who can punish any coverage.
+        </p>
+      </header>
+
+      <div class="section-body reverse">
+        <div class="section-text">
+          <p>
+            Not at all! Rather, the midrange is still prominently used among various NBA stars. For example, DeMar
+            DeRozan in the 2024 season shot a whopping 640 midrange shots. Additionally, a recent NBA champion, Shai
+            shot 348 attempts at 50% accuracy rate. Many of the stars in the NBA still utilize the midrange shot a lot!
+            So then what is going on? Where did all the midrange shots disappear to?
+          </p>
+          <p>
+            Rather, what really happened is the midrange shot has disappeared for role players. Team have effectively
+            shifted role players from taking catch and shoot long 2s to corner and above the break threes to capitalize
+            on the larger expected points per possession. However, many stars still utilize and shoot the midranger
+            exceptionally well. Rather, with the analytics revolution, coaches have realized that midrange shots have
+            immense values, but only for incredible shooters and stars who can exert immense pressure on NBA defenses.
+          </p>
+        </div>
+
+        <figure class="plot-card">
+          <!-- Replace src with your actual filename -->
+          <img
+            src="img/top_midrange_stars_2024.png"
+            alt="Bar chart of top midrange shooters in the 2024 season with attempts and field goal percentage."
+            class="plot-image"
+          />
+          <figcaption class="plot-caption">
+            <span>Figure 5.</span> Top midrange stars in the 2024 season. Players like DeMar DeRozan and Shai
+            Gilgeous-Alexander still live in the midrange — and hit those shots at high clips.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Past vs present -->
+    <section id="past-present" class="section container">
+      <header class="section-header">
+        <div>
+          <div class="section-kicker">Section 5</div>
+          <h2 class="section-title">Past vs present midrange specialists</h2>
+        </div>
+        <p class="section-subtitle">
+          The biggest change isn’t just volume — it’s shot selection. Modern stars are more selective and efficient
+          than their predecessors.
+        </p>
+      </header>
+
+      <div class="section-body">
+        <div class="section-text">
+          <p>
+            This difference in approach towards who and when should midrange shots be taken can be shown through
+            comparing the current NBA stars with the midrange stars of the past. As shown in the above graph, the top
+            midrange stars in the 2004 season shot slightly more midrange shots. However, their accuracy is much lower.
+            This illustrates how current stars are much more judicious about choosing when to shoot midrange shots. In
+            our current NBA, the coaches may not even allow Iverson to shoot that many midrange shots!
+          </p>
+        </div>
+
+        <figure class="plot-card">
+          <!-- Replace src with your actual filename -->
+          <img
+            src="img/past_vs_present_midrange_stars.png"
+            alt="Comparison of midrange attempts and accuracy for top stars in 2004 vs modern NBA."
+            class="plot-image"
+          />
+          <figcaption class="plot-caption">
+            <span>Figure 6.</span> Comparing midrange specialists in 2004 vs the modern era. Present-day stars often
+            shoot fewer, cleaner midrange looks — but with much better efficiency.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Built for DSCI 304 • Data, visualization, and basketball strategy.</p>
+    </div>
+  </footer>
+</body>
+</html>
