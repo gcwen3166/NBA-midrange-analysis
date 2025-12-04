@@ -325,6 +325,12 @@
       grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.25fr);
     }
 
+    .section-body.vertical {
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+
     .section-text p {
       margin: 0 0 0.9rem;
       font-size: 0.98rem;
@@ -475,7 +481,7 @@
         </p>
       </header>
 
-      <div class="section-body">
+      <div class="section-body vertical">
         <div class="section-text">
           <p>
             And, there is some truth in these critics. Since the introduction of the three pointer to the NBA in 1979,
@@ -501,59 +507,58 @@
 
     <!-- Shot value & efficiency -->
     <section id="efficiency" class="section container">
-      <header class="section-header">
-        <div>
-          <div class="section-kicker">Section 2</div>
-          <h2 class="section-title">Not all shots are created equal</h2>
-        </div>
-        <p class="section-subtitle">
-          Once you look at efficiency and expected points, the logic behind the three-point craze becomes clearer.
-        </p>
-      </header>
+  <header class="section-header">
+    <div>
+      <div class="section-kicker">Section 2</div>
+      <h2 class="section-title">Not all shots are created equal</h2>
+    </div>
+    <p class="section-subtitle">
+      Once you look at efficiency and expected points, the logic behind the three-point craze becomes clearer.
+    </p>
+  </header>
 
-      <div class="section-body reverse">
-        <div class="section-text">
-          <p>
-            And this makes sense. Above are the shooting percentages by major shot type in the NBA in the 2024 season.
-            On average, NBA players shot 78% at the free throw line, 66.3% on layups, 41.9% on midrange shots, and 36%
-            on threes.
-          </p>
-          <p>
-            Once you convert those accuracies to the expected points per possession on these different shots, you can
-            begin to understand why teams favor the three so much. Simply by stepping back a few steps, teams can
-            increase their expected points per passion by .24! While free throws and layups are still the most valuable,
-            threes are much more valuable than midranges for the average NBA player.
-          </p>
-        </div>
+  <div class="section-body vertical">
+    <!-- Text block -->
+    <div class="section-text">
+      <p>
+        And this makes sense. Above are the shooting percentages by major shot type in the NBA in the 2024 season.
+        On average, NBA players shot 78% at the free throw line, 66.3% on layups, 41.9% on midrange shots, and 36%
+        on threes.
+      </p>
+      <p>
+        Once you convert those accuracies to the expected points per possession on these different shots, you can
+        begin to understand why teams favor the three so much. Simply by stepping back a few steps, teams can
+        increase their expected points per passion by .24! While free throws and layups are still the most valuable,
+        threes are much more valuable than midranges for the average NBA player.
+      </p>
+    </div>
 
-        <div class="plot-grid">
-          <figure class="plot-card">
-            <!-- Replace src with your actual filename -->
-            <img
-              src="img/Shooting Percentages.png"
-              alt="Bar chart of shooting percentages in 2024 by shot type: free throws, layups, midrange, and threes."
-              class="plot-image"
-            />
-            <figcaption class="plot-caption">
-              <span>Figure 2.</span> Shooting percentages by shot type in the 2024 season.
-            </figcaption>
-          </figure>
+    <!-- Plot 1: Shooting percentages (full width) -->
+    <figure class="plot-card">
+      <img
+        src="img/shot_type_percentages_2024.png"
+        alt="Bar chart of shooting percentages in 2024 by shot type: free throws, layups, midrange, and threes."
+        class="plot-image"
+      />
+      <figcaption class="plot-caption">
+        <span>Figure 2.</span> Shooting percentages by shot type in the 2024 season.
+      </figcaption>
+    </figure>
 
-          <figure class="plot-card">
-            <!-- Replace src with your actual filename -->
-            <img
-              src="img/Expected PPP.png"
-              alt="Bar chart of expected points per possession by shot type in 2024."
-              class="plot-image"
-            />
-            <figcaption class="plot-caption">
-              <span>Figure 3.</span> Expected points per possession for each shot type. Threes clearly outpace midrange
-              jumpers for the average player.
-            </figcaption>
-          </figure>
-        </div>
-      </div>
-    </section>
+    <!-- Plot 2: Expected points per shot (full width) -->
+    <figure class="plot-card">
+      <img
+        src="img/expected_points_per_shot_2024.png"
+        alt="Bar chart of expected points per possession by shot type in 2024."
+        class="plot-image"
+      />
+      <figcaption class="plot-caption">
+        <span>Figure 3.</span> Expected points per possession for each shot type.
+        Threes clearly outpace midrange jumpers for the average player.
+      </figcaption>
+    </figure>
+  </div>
+</section>
 
     <!-- Midrange attempts over time -->
     <section id="midrange-decline" class="section container">
@@ -567,7 +572,7 @@
         </p>
       </header>
 
-      <div class="section-body">
+      <div class="section-body vertical">
         <div class="section-text">
           <p>
             Furthermore, when looking at the total midrange attempts taken year by year, the number of total midrange
@@ -604,7 +609,7 @@
         </p>
       </header>
 
-      <div class="section-body reverse">
+      <div class="section-body vertical">
         <div class="section-text">
           <p>
             Not at all! Rather, the midrange is still prominently used among various NBA stars. For example, DeMar
@@ -649,7 +654,7 @@
         </p>
       </header>
 
-      <div class="section-body">
+      <div class="section-body vertical">
         <div class="section-text">
           <p>
             This difference in approach towards who and when should midrange shots be taken can be shown through
