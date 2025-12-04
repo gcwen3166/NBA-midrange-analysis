@@ -319,6 +319,20 @@
       max-width: 26rem;
     }
 
+    .section-highlight {
+      margin: 0.75rem 0 0; /* space under the title */
+      padding: 0.85rem 1.1rem;
+      border-radius: 0.9rem;
+      font-size: 1rem;          /* a bit bigger than body text */
+      font-weight: 500;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 0 0, rgba(249, 115, 22, 0.32), transparent 55%),
+        rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(249, 115, 22, 0.7);
+      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.9);
+    }
+
     .section-body {
       display: grid;
       grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.05fr);
@@ -481,7 +495,7 @@
           <div class="section-kicker">Section 1</div>
           <h2 class="section-title">The rise of the three-pointer</h2>
         </div>
-        <p class="section-subtitle">
+        <p class="section-highlight">
           From a novelty line in 1979 to the engine of modern offenses, threes have skyrocketed in volume.
         </p>
       </header>
@@ -517,7 +531,7 @@
       <div class="section-kicker">Section 2</div>
       <h2 class="section-title">Not all shots are created equal</h2>
     </div>
-    <p class="section-subtitle">
+    <p class="section-highlight">
       Once you look at efficiency and expected points, the <strong>logic</strong> behind the three-point craze becomes clearer.
     </p>
   </header>
@@ -572,7 +586,7 @@
           <div class="section-kicker">Section 3</div>
           <h2 class="section-title">Where did all the midrange shots go?</h2>
         </div>
-        <p class="section-subtitle">
+        <p class="section-highlight">
           League-wide midrange volume has dropped to <strong>historic lows</strong>, but that doesn’t mean the shot has <strong>vanished</strong>.
         </p>
       </header>
@@ -609,7 +623,7 @@
           <div class="section-kicker">Section 4</div>
           <h2 class="section-title">The midrange is now a star shot</h2>
         </div>
-        <p class="section-subtitle">
+        <p class="section-highlight">
           Teams have shifted midrange usage away from role players and toward <strong>elite creators</strong> who can punish any coverage.
         </p>
       </header>
@@ -653,7 +667,7 @@
           <div class="section-kicker">Section 5</div>
           <h2 class="section-title">Past vs present midrange specialists</h2>
         </div>
-        <p class="section-subtitle">
+        <p class="section-highlight">
           The biggest change isn’t just volume; rather, it’s shot selection. Modern stars are more selective and efficient
           than their predecessors.
         </p>
@@ -688,7 +702,7 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p>Built By George Wen • Data, visualization, and basketball strategy.</p>
+      <p>Built By George Wen & Chatgpt • Data, visualization, and basketball strategy.</p>
     </div>
   </footer>
 </body>
